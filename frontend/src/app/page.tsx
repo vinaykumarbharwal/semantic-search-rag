@@ -45,7 +45,7 @@ export default function Home() {
               <Zap className="w-5 h-5 text-text-inverse" />
             </div>
             <span className="font-display font-bold text-xl tracking-tight text-white">
-              RankSmart
+              Cortex
             </span>
           </div>
           <div className="hidden md:flex items-center gap-8">
@@ -164,7 +164,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="py-12 border-t border-white/5 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-sm text-text-secondary">© 2026 RankSmart AI. All rights reserved.</span>
+          <span className="text-sm text-text-secondary">© 2026 Cortex AI. All rights reserved.</span>
           <div className="flex gap-8">
             <Globe className="w-5 h-5 text-text-secondary hover:text-white transition-colors cursor-pointer" />
             <ExternalLink className="w-5 h-5 text-text-secondary hover:text-white transition-colors cursor-pointer" />

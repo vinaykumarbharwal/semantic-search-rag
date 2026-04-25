@@ -1,6 +1,6 @@
-# RankSmart | Ultra-Fast AI-Powered Semantic Search & RAG
+# Cortex | Ultra-Fast AI-Powered Semantic Search & RAG
 
-**RankSmart** is an enterprise-grade Semantic Search and Retrieval-Augmented Generation (RAG) system built for high-performance technical knowledge retrieval. By leveraging **Groq's Llama-3** models and **FAISS** vector storage, it delivers sub-second, grounded answers with verifiable citations.
+**Cortex** is an enterprise-grade Semantic Search and Retrieval-Augmented Generation (RAG) system built for high-performance technical knowledge retrieval. By leveraging **Groq's Llama-3** models and **FAISS** vector storage, it delivers sub-second, grounded answers with verifiable citations.
 
 ![Architecture](https://img.shields.io/badge/Architecture-Hybrid--Retrieval-00EA64?style=for-the-badge)
 ![Tech Stack](https://img.shields.io/badge/LLM-Groq_Llama--3.1-blue?style=for-the-badge)
@@ -10,7 +10,7 @@
 
 ## 🏛️ System Architecture
 
-RankSmart operates on a multi-stage pipeline designed for accuracy and speed:
+Cortex operates on a multi-stage pipeline designed for accuracy and speed:
 
 ```mermaid
 graph TD
@@ -114,4 +114,4 @@ The main RAG endpoint.
 
 ---
 
-Built with ❤️ by Antigravity for the Advanced Agentic Coding team.
+Built with ❤️ for the Advanced Agentic Coding team.

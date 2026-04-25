@@ -18,8 +18,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RankSmart | AI-Powered Semantic Search & RAG",
-  description: "Enterprise-grade document retrieval and question-answering system powered by vector embeddings and LLMs.",
+  title: "Cortex | Semantic Search RAG",
+  description: "Enterprise-grade technical knowledge assistant.",
 };
 
 export default function RootLayout({

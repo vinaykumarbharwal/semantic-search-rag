@@ -14,7 +14,7 @@ import time
 import os
 
 app = FastAPI(
-    title="Semantic Search RAG API",
+    title="Cortex Semantic Search RAG API",
     description="Intelligent Document Retrieval & Question-Answering System",
     version="1.0.0"
 )
