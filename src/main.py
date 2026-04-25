@@ -57,7 +57,7 @@ async def health_check():
         "components": {
             "index": index_status,
             "embedding_model": Config.EMBEDDING_MODEL,
-            "llm_backend": "configured" if (Config.OPENAI_API_KEY or Config.ANTHROPIC_API_KEY) else "missing_keys"
+            "llm_backend": "configured" if Config.GROQ_API_KEY else "missing_keys"
         }
     }
 
@@ -120,7 +120,7 @@ async def search(q: str, k: int = 5):
         return {"error": str(e), "results": []}
 
 @app.post("/api/v1/ask")
-async def ask(question: str, k: int = 5, provider: str = "openai"):
+async def ask(question: str, k: int = 5):
     """RAG endpoint - retrieve context and generate an answer."""
     
     start_time = time.time()
@@ -133,7 +133,7 @@ async def ask(question: str, k: int = 5, provider: str = "openai"):
             return {"error": "Index not found. Please ingest documents first."}
 
         retriever = RetrievalService(index_manager)
-        llm_client = LLMClient(provider=provider)
+        llm_client = LLMClient()
         rag_service = RAGService(retriever, llm_client)
         
         # 2. Get Answer

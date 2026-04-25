@@ -4,12 +4,8 @@ sentence-transformers
 faiss-cpu
 langchain
 langchain-community
-langchain-openai
-langchain-anthropic
 langchain-groq
 pypdf
 python-dotenv
 ragas
-openai
-anthropic
 python-multipart

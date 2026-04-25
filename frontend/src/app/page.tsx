@@ -17,7 +17,7 @@ export default function Home() {
     setResults(null);
     
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/ask?question=${encodeURIComponent(query)}&provider=groq`, {
+      const response = await fetch(`http://localhost:8000/api/v1/ask?question=${encodeURIComponent(query)}`, {
         method: 'POST'
       });
       const data = await response.json();
