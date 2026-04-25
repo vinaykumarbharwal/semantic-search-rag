@@ -2,6 +2,23 @@
 
 **Cortex** is an enterprise-grade Semantic Search and Retrieval-Augmented Generation (RAG) system built for high-performance technical knowledge retrieval. By leveraging **Groq's Llama-3** models and **FAISS** vector storage, it delivers sub-second, grounded answers with verifiable citations.
 
+> Cortex is about understanding documents and answering questions about them — it's a question-answering system. Think: AI chatbot over your documents.
+
+---
+
+## 🔍 How It Works: A Deep Dive
+
+### **What is Cortex?**
+Cortex is a **Personal AI Search Engine**. You provide it with your own documents (PDFs, Text files, or Markdown notes), and it "ingests" them to understand their content. Once indexed, you can ask complex technical questions and receive precise answers based *only* on your uploaded data—complete with citations.
+
+### **The 4-Step Process:**
+1. **Ingestion:** When you upload a file, the system splits it into manageable **Chunks** (e.g., 512 characters). This allows the AI to pinpoint specific information later.
+2. **Embeddings:** Each chunk is processed by an embedding model (`all-MiniLM-L6-v2`) that understands its semantic meaning and converts it into a mathematical **Vector**.
+3. **Vector Storage:** These vectors are stored in a high-performance **FAISS Database**. When you ask a question, the system searches this database for the most relevant chunks.
+4. **RAG (Generation):** The best-matching chunks are sent to **Groq's Llama-3** LLM. The AI reads this specific context and generates a grounded, accurate answer with references back to the original files.
+
+---
+
 ![Architecture](https://img.shields.io/badge/Architecture-Hybrid--Retrieval-00EA64?style=for-the-badge)
 ![Tech Stack](https://img.shields.io/badge/LLM-Groq_Llama--3.1-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-gray?style=for-the-badge)
