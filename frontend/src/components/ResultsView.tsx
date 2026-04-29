@@ -10,14 +10,29 @@ interface Source {
   excerpt: string;
 }
 
+
 interface ResultsViewProps {
   answer: string;
   sources: Source[];
   latency?: number;
+  onSelectedSourcesChange?: (selected: Source[]) => void;
 }
 
-export default function ResultsView({ answer, sources, latency }: ResultsViewProps) {
+
+export default function ResultsView({ answer, sources, latency, onSelectedSourcesChange }: ResultsViewProps) {
   const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+  const [selectedSources, setSelectedSources] = useState<Source[]>([]);
+
+  const handleCheckboxChange = (source: Source, checked: boolean) => {
+    let updated: Source[];
+    if (checked) {
+      updated = [...selectedSources, source];
+    } else {
+      updated = selectedSources.filter(s => !(s.file_name === source.file_name && s.page === source.page));
+    }
+    setSelectedSources(updated);
+    if (onSelectedSourcesChange) onSelectedSourcesChange(updated);
+  };
 
   // Helper to parse answer and make citations interactive
   const renderAnswer = (text: string) => {
@@ -82,34 +97,45 @@ export default function ResultsView({ answer, sources, latency }: ResultsViewPro
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
-            {sources.map((source, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ scale: 1.02, border: "1px solid rgba(0, 234, 100, 0.4)" }}
-                onClick={() => setSelectedSource(source)}
-                className="bg-white/5 border border-white/5 p-5 rounded-xl transition-all group cursor-pointer"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded bg-brand-primary/10 flex items-center justify-center">
-                      <FileText className="w-4 h-4 text-brand-primary" />
+            {sources.map((source, i) => {
+              const checked = selectedSources.some(s => s.file_name === source.file_name && s.page === source.page);
+              return (
+                <motion.div
+                  key={i}
+                  whileHover={{ scale: 1.02, border: "1px solid rgba(0, 234, 100, 0.4)" }}
+                  className="bg-white/5 border border-white/5 p-5 rounded-xl transition-all group cursor-pointer relative"
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={e => handleCheckboxChange(source, e.target.checked)}
+                    className="absolute top-4 right-4 w-4 h-4 accent-brand-primary z-10"
+                    onClick={e => e.stopPropagation()}
+                  />
+                  <div onClick={() => setSelectedSource(source)}>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded bg-brand-primary/10 flex items-center justify-center">
+                          <FileText className="w-4 h-4 text-brand-primary" />
+                        </div>
+                        <span className="text-sm font-semibold text-white group-hover:text-brand-primary transition-colors">
+                          {source.file_name}
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold text-white/30 bg-white/5 px-2 py-1 rounded uppercase tracking-tighter">
+                        P. {source.page}
+                      </span>
                     </div>
-                    <span className="text-sm font-semibold text-white group-hover:text-brand-primary transition-colors">
-                      {source.file_name}
-                    </span>
+                    <p className="text-xs text-text-secondary leading-relaxed line-clamp-3 italic mb-3">
+                      "{source.excerpt}"
+                    </p>
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-brand-primary opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">
+                      Inspect Source <Maximize2 className="w-3 h-3" />
+                    </div>
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-white/30 bg-white/5 px-2 py-1 rounded uppercase tracking-tighter">
-                    P. {source.page}
-                  </span>
-                </div>
-                <p className="text-xs text-text-secondary leading-relaxed line-clamp-3 italic mb-3">
-                  "{source.excerpt}"
-                </p>
-                <div className="flex items-center gap-1 text-[10px] font-bold text-brand-primary opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">
-                  Inspect Source <Maximize2 className="w-3 h-3" />
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

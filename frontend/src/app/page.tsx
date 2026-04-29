@@ -7,21 +7,54 @@ import UploadPortal from "@/components/UploadPortal";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, ExternalLink, ShieldCheck, Database, Zap, Search, Upload } from "lucide-react";
 
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"search" | "ingest">("search");
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<any>(null);
+  const [selectedSources, setSelectedSources] = useState<any[]>([]);
+  const [question, setQuestion] = useState<string>("");
 
   const handleSearch = async (query: string) => {
     setIsSearching(true);
     setResults(null);
-    
+    setQuestion(query);
     try {
       const response = await fetch(`http://localhost:8000/api/v1/ask?question=${encodeURIComponent(query)}`, {
         method: 'POST'
       });
       const data = await response.json();
-      
+      if (data.error) {
+        alert("Error: " + data.error);
+      } else {
+        setResults(data);
+      }
+    } catch (error) {
+      console.error("Search failed:", error);
+      alert("Failed to connect to the backend server. Make sure it is running on port 8000.");
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Ask about selected documents only
+  const handleAskSelected = async () => {
+    if (!question || selectedSources.length === 0) {
+      alert("Please enter a question and select at least one document.");
+      return;
+    }
+    setIsSearching(true);
+    setResults(null);
+    try {
+      const response = await fetch(`http://localhost:8000/api/v1/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question,
+          sources: selectedSources
+        })
+      });
+      const data = await response.json();
       if (data.error) {
         alert("Error: " + data.error);
       } else {
@@ -98,6 +131,7 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
           >
+
             <SearchHero onSearch={handleSearch} />
 
             {/* Results Section */}
@@ -116,12 +150,21 @@ export default function Home() {
                 )}
 
                 {results && !isSearching && (
-                  <div className="flex justify-center">
-                    <ResultsView 
-                      answer={results.answer} 
-                      sources={results.sources} 
-                      latency={results.latency_ms} 
+                  <div className="flex flex-col items-center">
+                    <ResultsView
+                      answer={results.answer}
+                      sources={results.sources}
+                      latency={results.latency_ms}
+                      onSelectedSourcesChange={setSelectedSources}
                     />
+                    {results.sources && results.sources.length > 0 && (
+                      <button
+                        className="mt-6 bg-brand-primary text-text-inverse font-bold px-6 py-3 rounded-lg hover:scale-[1.02] active:scale-95 transition-all"
+                        onClick={handleAskSelected}
+                      >
+                        Ask about selected documents
+                      </button>
+                    )}
                   </div>
                 )}
               </AnimatePresence>
